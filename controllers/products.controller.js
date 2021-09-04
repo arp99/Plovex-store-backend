@@ -19,7 +19,7 @@ const addNewProduct = async ( req, res ) => {
         const productToAdd = req.body;
         const newProduct = new Product(productToAdd)
         const savedProduct = await newProduct.save()
-        res.status(201).json({ succrss : false, message : "Product added successfully", data : savedProduct })
+        res.status(201).json({ success : false, message : "Product added successfully", data : savedProduct })
     }catch( err ){
         res.status(500).json({
             success : false,
