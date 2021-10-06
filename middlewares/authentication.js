@@ -7,7 +7,7 @@ const verifyAuth = async ( req, res, next ) => {
         if(!token){
             return res.status(401).json({ success : false, message : "Unauthorized message! Token missing"})
         }
-        const decoded = jwt.verify( token, process.env.SECRET )
+        const decoded = jwt.verify( token, process.env.SECRET_KEY )
         const isUserExists = await User.find({ _id : decoded.userId })
         if( isUserExists ){
             req.user = { userId : decoded.userId }
