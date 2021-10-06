@@ -13,4 +13,4 @@ router.route("/")
 router.route("/:id")
     .get( getProductById )
 
-module.exports = { router }
+module.exports = router
