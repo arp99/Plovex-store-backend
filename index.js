@@ -11,6 +11,7 @@ const cart = require("./routes/cart.router")
 const wishlist = require("./routes/wishlist.router")
 const login = require("./routes/login.router")
 const category = require("./routes/category.router")
+const home = require("./routes/homePage.router")
 
 
 app.use(cors())
@@ -32,6 +33,7 @@ app.use( "/cart", cart )
 app.use( "/wishlist", wishlist )
 app.use( "/login", login )
 app.use( "/category", category )
+app.use( "/home-page", home )
 
 // error handler middlewares
 app.use(routeNotFoundHandler)
