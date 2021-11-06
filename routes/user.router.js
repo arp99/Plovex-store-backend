@@ -1,6 +1,5 @@
 const express = require("express")
 const { 
-    createNewUser, 
     getUserById,
     getUserData,
     updateUserData
@@ -10,9 +9,6 @@ const router = express.Router()
 
 router.route("/")
     .get( verifyAuth , getUserData )
-
-router.route("/signup")
-    .post( createNewUser )
 
 router.route("/update")
         .post( verifyAuth, updateUserData )
