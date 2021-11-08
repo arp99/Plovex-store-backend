@@ -47,4 +47,96 @@ const getProductById = async ( req, res ) =>{
     }
 }
 
-module.exports = { getAllProducts, addNewProduct, getProductById }
+const getProductsByBrand = async ( brand ) => {
+    try{
+        const productBrand = brand
+        const products = await Product.find({ brand : productBrand })
+        if( products.length > 0 ){
+            return {
+                statusCode : 200,
+                success    : true,
+                message    : "Successfully found products",
+                data       : products
+            }
+        }
+        else{
+            return {
+                statusCode : 404,
+                success    : false,
+                message    : "Product not found"
+            }
+        }
+    }catch( err ){
+        throw ({
+            statusCode   : 500,
+            child        : true,
+            success      : false,
+            message      : "Error in fetching product",
+        })
+    }
+}
+
+const getProductsByCategory = async ( category ) => {
+    try{
+        const productCategory = category
+        const products = await Product.find({ category : productCategory })
+        if( products.length > 0 ){
+            
+            return {
+                statusCode : 200,
+                success    : true,
+                message    : "Successfully found products",
+                data       : products
+            } 
+        }
+        else{
+            return {
+                statusCode : 404,
+                success    : false,
+                message    : "Product not found"
+            }
+        }        
+    }catch( err ){
+        throw ({
+            statusCode   : 500,
+            child        : true,
+            success      : false,
+            message      : "Error in fetching product",
+        })
+    }
+}
+
+
+const getFilteredProducts = async (req, res) => {
+    try{
+        const brand = req.query.brand
+        const category = req.query.category
+        let response
+        if( brand ){
+            response =  await getProductsByBrand(brand.toLowerCase())
+        }
+        if( category ){
+            response = await getProductsByCategory(category.toLowerCase())
+        }
+        res.status( response.statusCode )
+            .json( response )
+
+    }catch( err ){
+        console.log( err )
+        res.status(500)
+            .json({
+                success : false,
+                message : err.child ? err.message : "Error in fetching filtered products",
+            })
+    }
+}
+
+
+module.exports = { 
+    getAllProducts, 
+    addNewProduct, 
+    getProductById, 
+    getProductsByBrand,
+    getProductsByCategory,
+    getFilteredProducts 
+}
