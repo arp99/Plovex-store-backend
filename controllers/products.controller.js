@@ -47,6 +47,32 @@ const getProductById = async ( req, res ) =>{
     }
 }
 
+const getAllNewProducts = async ( req, res ) => {
+    try{
+        const products = await Product.find({ newLaunch : true })
+        if( products ){
+            res.status(200)
+                .json({ 
+                    success : true,
+                    message : "Successfully found products", 
+                    data    : products 
+                })
+        }else{
+            res.status(404)
+                .json({ 
+                    success : false,
+                    message : "Products not found" 
+                })
+        }
+    }catch( err ){
+        res.status(500)
+            .json({
+                success : false,
+                message : "Error in fetching products",
+            })
+    }
+}
+
 const getProductsByBrand = async ( brand ) => {
     try{
         const productBrand = brand
@@ -138,5 +164,6 @@ module.exports = {
     getProductById, 
     getProductsByBrand,
     getProductsByCategory,
-    getFilteredProducts 
+    getFilteredProducts,
+    getAllNewProducts 
 }
