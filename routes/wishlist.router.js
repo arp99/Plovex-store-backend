@@ -1,9 +1,9 @@
 const express = require('express')
-const { getUserById } = require('../controllers/users.controller')
 const {  
-    addOrUpdateWishlist, 
     getOrCreateWishlist, 
-    getProductsInWishlist
+    getProductsInWishlist,
+    addToWishlist,
+    removeFromWishlist
 } = require('../controllers/wishlist.controller')
 const { verifyAuth } = require('../middlewares/authentication')
 const router = express.Router()
@@ -13,7 +13,9 @@ router.param("userId", getOrCreateWishlist ) //now check if an empty wishlist ex
 
 router.route("/:userId/wishlist_products")
     .get( verifyAuth, getProductsInWishlist ) //get all products in wishlist
-router.route("/:userId/update_wishlist")
-    .post( verifyAuth, addOrUpdateWishlist ) //add or update products in wishlist
+router.route("/:userId/add_to_wishlist")
+    .post( verifyAuth, addToWishlist ) //add or update products in wishlist
+router.route("/:userId/remove_from_wishlist")
+    .post( verifyAuth, removeFromWishlist )
 
 module.exports = router

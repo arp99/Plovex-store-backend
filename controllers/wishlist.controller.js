@@ -49,7 +49,7 @@ const getProductsInWishlist = async ( req, res ) => {
     }
 }
 
-const addOrUpdateWishlist = async ( req, res ) =>{
+const addToWishlist = async ( req, res ) =>{
     try{
         const productToUpdate = req.body 
         const { wishlist } = req
@@ -58,15 +58,11 @@ const addOrUpdateWishlist = async ( req, res ) =>{
             ( product ) => product.productId.toString() === productToUpdate.productId
         )
         // remove product if it is already in wishlist
-        if( isProductAlreadyAdded ){
-            const updatedProducts = wishlist.products.filter( 
-                product => product.productId.toString() !== productToUpdate.productId 
-            )
-            wishlist.products = updatedProducts
-        }else{
+        if( !isProductAlreadyAdded ){
             wishlist.products.push({ productId : productToUpdate.productId })
         }
-        let updatedWishlist = await wishlist.save()
+        
+        await wishlist.save()
         res.status(200)
             .json({
                 success : true,
@@ -82,8 +78,41 @@ const addOrUpdateWishlist = async ( req, res ) =>{
     }
 }
 
+const removeFromWishlist = async ( req, res ) => {
+    try{
+
+        const productToRemove = req.body
+        const { wishlist } = req
+        const isProductAlreadyAdded = wishlist.products.find(
+            ( product ) => product.productId.toString() === productToRemove.productId
+        )
+
+        if( isProductAlreadyAdded ){
+            const updatedProducts = wishlist.products.filter( 
+                product => product.productId.toString() !== productToRemove.productId 
+            )
+            wishlist.products = updatedProducts
+        }
+        await wishlist.save()
+
+        res.status(200)
+            .json({
+                success : true,
+                message: "Successfully updated wishlist"
+            })
+    }catch( err ){
+        res.status(500)
+            .json({
+                success      : false,
+                message      : " Error in updating wishlist",
+                errorMessage : err.message
+            })
+    }
+}
+
 module.exports = {
-    addOrUpdateWishlist,
+    addToWishlist,
+    removeFromWishlist,
     getOrCreateWishlist,
     getProductsInWishlist
 };
