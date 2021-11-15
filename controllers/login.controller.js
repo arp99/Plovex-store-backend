@@ -33,7 +33,8 @@ const loginUser = async ( req, res ) =>{
             .json({
                 success : true,
                 message : "Login successful!",
-                token
+                token,
+                userId : user._id
             })
     }catch( err ){
         res.status( 500 )
