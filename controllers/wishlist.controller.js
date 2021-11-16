@@ -1,6 +1,5 @@
 const { Wishlist } = require("../models/wishlist.model")
-const mongoose = require("mongoose")
-const { ObjectId } = mongoose.Types
+const { Product } = require("../models/products.model")
 
 const getOrCreateWishlist = async ( req , res, next, id ) => {
     //find wishlist of an user, if not exist create one
@@ -57,16 +56,17 @@ const addToWishlist = async ( req, res ) =>{
         const isProductAlreadyAdded = wishlist.products.find(
             ( product ) => product.productId.toString() === productToUpdate.productId
         )
-        // remove product if it is already in wishlist
         if( !isProductAlreadyAdded ){
             wishlist.products.push({ productId : productToUpdate.productId })
         }
-        
+
         await wishlist.save()
+        const productAdded = await Product.findOne({ _id : productToUpdate.productId })
         res.status(200)
             .json({
                 success : true,
-                message: "Successfully updated wishlist"
+                message: "Successfully updated wishlist",
+                product : productAdded
             })
     }catch( err ){
         res.status(500)
