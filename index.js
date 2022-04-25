@@ -13,7 +13,7 @@ const login = require("./routes/login.router")
 const signup = require("./routes/signup.router")
 const category = require("./routes/category.router")
 const home = require("./routes/homePage.router")
-
+const payment = require("./routes/payments.router")
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -36,6 +36,7 @@ app.use( "/login", login )
 app.use( "/signup", signup )
 app.use( "/category", category )
 app.use( "/home-page", home )
+app.use( "/payment", payment )
 
 // error handler middlewares
 app.use(routeNotFoundHandler)
