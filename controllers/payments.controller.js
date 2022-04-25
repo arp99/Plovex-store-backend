@@ -19,7 +19,7 @@ const makePayment = async (req, res) => {
       success: true,
       orderData: {
         orderId: order.id,
-        transactionAmount: order.amount,
+        transactionAmount: (order.amount / 100).toFixed(2),
       },
       message: "Payment Successfull",
     });
